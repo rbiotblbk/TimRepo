@@ -38,6 +38,8 @@ class HTMLParser(WebScraper):
     def scrape_page(self) -> None:
         """
             Parse HTML into Soup Object
+
+            Loads the content of the file specified in 'self.file'
         """
 
         with open(Path.cwd().joinpath(f"{self.config['HTML_input_path']}/{self.file}"), "rb") as f:
@@ -48,6 +50,8 @@ class HTMLParser(WebScraper):
     def build_page(self) -> None:
         """
             Build a new Soup Object that only contains the necessary tags
+
+            Loads the list of necessary tags from 'tag_id_list.json'
         """
 
         tag = self.soup.find("style")
@@ -81,8 +85,16 @@ class HTMLParser(WebScraper):
         """
             Write HTML to specified output directory
         """
-        with open(Path.cwd().joinpath(f"{self.config['HTML_output_path']}/{self.file}"), "w", encoding="utf-8") as f:
-            f.write(str(self.new_soup))
+
+        try:
+            dest = Path.cwd().joinpath(
+                f"{self.config['HTML_output_path']}/{self.file}")
+
+            with open(dest, "w", encoding="utf-8") as f:
+                f.write(str(self.new_soup))
+        except:
+            print("File couldn't be created")
+            logger.error("File couldn't be saved at '{dest}'")
 
         print("File saved successfully!")
         logger.info("File saved successfully!")
