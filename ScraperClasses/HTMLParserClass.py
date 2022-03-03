@@ -21,7 +21,6 @@ class HTMLParser(WebScraper):
             Parse HTML into Soup Object
         """
 
-        # FIXME: Hardcoded HTMLs
         with open(Path.cwd().joinpath(f"{self.config['HTML_input_path']}/{self.file}"), "rb") as f:
             self.page = f.read()
 
