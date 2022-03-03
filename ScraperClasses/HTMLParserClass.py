@@ -34,13 +34,8 @@ class HTMLParser(WebScraper):
         tag = self.soup.find("style")
         self.new_soup.append(tag)
 
-        # TODO: Change to JSON File
-        tag_id_list = {"sidenav": ["append", None],
-                       "main": ["append", "margin-left:220px;padding-top:0px"],
-                       "mainLeaderboard": ["decompose", None],
-                       "leftmenuinner": [None, " "],
-                       "midcontentadcontainer": ["decompose", None]
-                       }
+        with open("tag_id_list.json", "r") as f:
+            tag_id_list = json.load(f)
 
         for id in tag_id_list:
             try:

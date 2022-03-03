@@ -1,10 +1,14 @@
 from ScraperClasses.WeatherScraperClass import WeatherScraper
 from ScraperClasses.HTMLParserClass import HTMLParser
 from pathlib import Path
+import json
 import os
 
 APP_FOLDER = Path(__file__).parent
 os.chdir(APP_FOLDER)
+
+with open("config.json", "r") as f:
+    config = json.load(f)
 
 
 def main() -> None:
@@ -16,7 +20,7 @@ def main() -> None:
         ws.write_to_json()"""
     # TODO: Logger einbauen
     file_list = list(
-        Path(APP_FOLDER / "HTMLs").glob("*.html"))
+        Path(APP_FOLDER / config["HTML_input_path"]).glob("*.html"))
 
     for file in file_list:
         html_parser = HTMLParser(os.path.basename(file))
