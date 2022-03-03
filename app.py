@@ -1,6 +1,8 @@
 from ScraperClasses.WeatherScraperClass import WeatherScraper
 from ScraperClasses.HTMLParserClass import HTMLParser
 from pathlib import Path
+from logging.config import fileConfig
+import logging
 import json
 import os
 
@@ -10,17 +12,16 @@ os.chdir(APP_FOLDER)
 with open("config.json", "r") as f:
     config = json.load(f)
 
+fileConfig(config["logger_config"], disable_existing_loggers=False)
+
+logger = logging.getLogger()
+
 
 def main() -> None:
-    """ws = WeatherScraper(
-        "https://weather.com/de-DE/wetter/heute/l/60b2003898aa2f2d8a5fff837187aa7adf9e4dbed6ff36aa45ccab7d618a2add")
-
-    if ws.scrape_page():
-        ws.scrape_all()
-        ws.write_to_json()"""
-    # TODO: Logger einbauen
     file_list = list(
         Path(APP_FOLDER / config["HTML_input_path"]).glob("*.html"))
+
+    logger.info(f"Found {len(file_list)} HTML files")
 
     for file in file_list:
         html_parser = HTMLParser(os.path.basename(file))

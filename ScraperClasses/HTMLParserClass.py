@@ -2,19 +2,38 @@ from bs4 import BeautifulSoup
 from BaseClasses.BaseScraper import WebScraper
 from pathlib import Path
 
-import datetime
+import logging
 import json
+import os
+
+
+logger = logging.getLogger()
 
 
 class HTMLParser(WebScraper):
     def __init__(self, file: str) -> None:
+        """
+        Create an HTMLParser Object
+
+        After instantiating an Object, call scrape_page() followed by build_page()
+        and finally write_to_html()
+
+        Args:
+            file (str): Filename of the corresponding HTML File to pe parsed
+        """
         super().__init__()
+
         self.file = file
-        self._cache = {}
         self.new_soup = BeautifulSoup("<!DOCTYPE html>", 'html.parser')
 
         with open("config.json", "r") as f:
             self.config = json.load(f)
+
+        if not os.path.exists(Path.cwd().joinpath(f"{self.config['HTML_input_path']}/{self.file}")):
+            logger.error(f"File '{self.file}' not found!")
+            raise FileNotFoundError(f"File '{self.file}' not found!")
+
+        logger.debug(f"Build HTMLParser with file '{file}'")
 
     def scrape_page(self) -> None:
         """
@@ -37,6 +56,8 @@ class HTMLParser(WebScraper):
         with open("tag_id_list.json", "r") as f:
             tag_id_list = json.load(f)
 
+        logger.debug(f"Loaded tags from file 'tag_id_list.json'")
+
         for id in tag_id_list:
             try:
                 tag = self.soup.find("div", attrs={
@@ -54,7 +75,7 @@ class HTMLParser(WebScraper):
                 elif tag_id_list[id][0] == "decompose":
                     tag.decompose()
             except:
-                pass
+                logger.debug(f"Tag with id '{id}' not found")
 
     def write_to_html(self) -> None:
         """
@@ -64,20 +85,13 @@ class HTMLParser(WebScraper):
             f.write(str(self.new_soup))
 
         print("File saved successfully!")
+        logger.info("File saved successfully!")
 
     def scrape_all(self) -> None:
         pass
 
     def get_page_content(self) -> bytes:
-        return self.page.content
+        pass
 
     def write_to_json(self) -> None:
-        """
-            Write JSON Object from data in self._cache
-        """
-
-        timestamp = datetime.datetime.now()
-        timestamp = f"{timestamp.day}-{timestamp.month}-{timestamp.year} {timestamp.hour}-{timestamp.minute}"
-
-        with open(f"Scraped_Files/{self.get_location()} {timestamp}.json", "w", encoding="utf-8") as file:
-            json.dump(self._cache, file)
+        pass
