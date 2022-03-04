@@ -2,12 +2,12 @@ from bs4 import BeautifulSoup
 from BaseClasses.BaseScraper import WebScraper
 from pathlib import Path
 
-import logging
+import config
 import json
 import os
 
 
-logger = logging.getLogger()
+logger = config.logger
 
 
 class HTMLParser(WebScraper):
@@ -64,7 +64,7 @@ class HTMLParser(WebScraper):
         with open("tag_id_list.json", "r") as f:
             tag_id_list = json.load(f)
 
-        logger.debug(f"Loaded tags from file 'tag_id_list.json'")
+        logger.debug("Loaded tags from file 'tag_id_list.json'")
 
         for id in tag_id_list:
             try:
