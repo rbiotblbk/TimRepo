@@ -6,6 +6,7 @@ import logging
 import json
 import os
 
+# TODO: In Config bis logger Zeile 20
 APP_FOLDER = Path(__file__).parent
 os.chdir(APP_FOLDER)
 

@@ -1,5 +1,6 @@
 {
     "HTML_input_path": "HTMLs",
     "HTML_output_path": "Target",
+    "HTML_output_name": "title",
     "logger_config": "logging.ini"
 }

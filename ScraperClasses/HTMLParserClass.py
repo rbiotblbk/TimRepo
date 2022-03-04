@@ -29,7 +29,11 @@ class HTMLParser(WebScraper):
         with open("config.json", "r") as f:
             self.config = json.load(f)
 
-        if not os.path.exists(Path.cwd().joinpath(f"{self.config['HTML_input_path']}/{self.file}")):
+        print(Path.cwd() / self.config['HTML_input_path'] / self.file)
+        print(Path.cwd().joinpath(
+            f"{self.config['HTML_input_path']}/{self.file}"))
+
+        if not os.path.exists(Path.cwd() / self.config['HTML_input_path'] / self.file):
             logger.error(f"File '{self.file}' not found!")
             raise FileNotFoundError(f"File '{self.file}' not found!")
 
@@ -42,7 +46,7 @@ class HTMLParser(WebScraper):
             Loads the content of the file specified in 'self.file'
         """
 
-        with open(Path.cwd().joinpath(f"{self.config['HTML_input_path']}/{self.file}"), "rb") as f:
+        with open(Path.cwd() / self.config['HTML_input_path'] / self.file, "rb") as f:
             self.page = f.read()
 
         self.soup = BeautifulSoup(self.page, 'html.parser')
@@ -87,16 +91,13 @@ class HTMLParser(WebScraper):
         """
 
         try:
-            dest = Path.cwd().joinpath(
-                f"{self.config['HTML_output_path']}/{self.file}")
+            dest = Path.cwd() / self.config['HTML_output_path'] / self.file
 
             with open(dest, "w", encoding="utf-8") as f:
                 f.write(str(self.new_soup))
-        except:
-            print("File couldn't be created")
-            logger.error("File couldn't be saved at '{dest}'")
+        except Exception as e:
+            logger.error("File couldn't be saved at '{dest} | {e}'")
 
-        print("File saved successfully!")
         logger.info("File saved successfully!")
 
     def scrape_all(self) -> None:
