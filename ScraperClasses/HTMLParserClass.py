@@ -29,10 +29,6 @@ class HTMLParser(WebScraper):
         with open("config.json", "r") as f:
             self.config = json.load(f)
 
-        print(Path.cwd() / self.config['HTML_input_path'] / self.file)
-        print(Path.cwd().joinpath(
-            f"{self.config['HTML_input_path']}/{self.file}"))
-
         if not os.path.exists(Path.cwd() / self.config['HTML_input_path'] / self.file):
             logger.error(f"File '{self.file}' not found!")
             raise FileNotFoundError(f"File '{self.file}' not found!")
