@@ -13,7 +13,7 @@
     ],
     "leftmenuinner": [
         null,
-        " "
+        "padding-top:0px !important"
     ],
     "midcontentadcontainer": [
         "decompose",

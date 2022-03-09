@@ -1,4 +1,5 @@
 from ScraperClasses.HTMLParserClass import HTMLParser
+from ScraperClasses.WebSpider import WebSpider
 from pathlib import Path
 
 import config
@@ -12,15 +13,25 @@ def main() -> None:
 
     config.logger.info(f"Found {len(file_list)} HTML files")
 
+    index = 1
+
     for file in file_list:
         # Create an HTMLParser for every file found
         html_parser = HTMLParser(os.path.basename(file))
+
+        config.logger.info("Parsing File " + str(index) +
+                           "/" + str(len(file_list)))
+
+        index += 1
 
         # Chain the 3 methods necessary to build and write the output HTML
         chain(html_parser.scrape_page,
               html_parser.build_page,
               html_parser.write_to_html
               )
+
+    #ws = WebSpider("https://www.w3schools.com/python/", domain="same")
+    # ws.get_html()
 
 
 def chain(*args) -> None:
