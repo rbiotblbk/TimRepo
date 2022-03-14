@@ -1,5 +1,7 @@
 from ScraperClasses.HTMLParserClass import HTMLParser
 from ScraperClasses.WebSpider import WebSpider
+from SenderClasses.SMTPSenderClass import SMTPSender
+from SenderClasses.FTPSenderClass import FTPSender
 from pathlib import Path
 
 import config
@@ -15,9 +17,9 @@ def main() -> None:
 
     index = 1
 
-    for file in file_list:
+    """for file in file_list:
         # Create an HTMLParser for every file found
-        html_parser = HTMLParser(os.path.basename(file))
+        html_parser = HTMLParser(os.path.basename(file), "wikipedia")
 
         config.logger.info("Parsing File " + str(index) +
                            "/" + str(len(file_list)))
@@ -28,10 +30,21 @@ def main() -> None:
         chain(html_parser.scrape_page,
               html_parser.build_page,
               html_parser.write_to_html
-              )
+              )"""
 
-    #ws = WebSpider("https://www.w3schools.com/python/", domain="same")
-    # ws.get_html()
+    # ws = WebSpider("https://www.w3schools.com/python/",
+    #               "https://www.w3schools.com/python/", "w3schools")
+    # ws.write_to_html()
+
+    #smtpsender = SMTPSender(file_list[5])
+    # smtpsender.send()
+
+    ftpsender = FTPSender(file_list[5])
+    ftpsender.send()
+
+    # ws = WebSpider("https://de.wikipedia.org/wiki/Telnet",
+    #               domain="https://de.wikipedia.org")
+    # ws.write_to_html()
 
 
 def chain(*args) -> None:

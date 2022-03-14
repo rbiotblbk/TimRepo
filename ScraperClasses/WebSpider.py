@@ -10,7 +10,7 @@ logger = config.logger
 
 
 class WebSpider():
-    def __init__(self, url: str, domain: str) -> None:
+    def __init__(self, url: str, domain: str, source_name: str) -> None:
         """
         Create an HTMLParser Object
 
@@ -23,6 +23,7 @@ class WebSpider():
 
         self.url = url
         self.domain = domain
+        self.source_name = source_name
 
         with open("config.json", "r") as f:
             self.config = json.load(f)
@@ -31,7 +32,7 @@ class WebSpider():
             logger.error(f"File '{self.file}' not found!")
             raise FileNotFoundError(f"File '{self.file}' not found!")"""
 
-        #logger.debug(f"Build HTMLParser with file '{file}'")
+        # logger.debug(f"Build HTMLParser with file '{file}'")
 
     def get_html(self) -> None:
         """
@@ -40,7 +41,7 @@ class WebSpider():
             Loads the content of the file specified in 'self.file'
         """
 
-        res = urllib.request.urlopen(self.url)
+        """res = urllib.request.urlopen(self.url)
 
         css_res = urllib.request.urlopen(
             "https://www.w3schools.com/lib/w3schools30.css")
@@ -69,7 +70,7 @@ class WebSpider():
                 r = r.replace("<!DOCTYPE html>",
                               "<!DOCTYPE html><style>" + str(c, "utf-8") + "</style>")
 
-                f.write(r)
+                f.write(r)"""
 
         """session = HTMLSession()
         response = session.get(self.url)
@@ -87,12 +88,46 @@ class WebSpider():
             Write HTML to specified output directory
         """
 
-        try:
-            dest = Path.cwd() / self.config['HTML_output_path'] / self.file
+        with open("link_location_list.json", "r") as f:
+            link_location = json.load(f)
 
-            with open(dest, "w", encoding="utf-8") as f:
-                f.write(str(self.new_soup))
-        except Exception as e:
-            logger.error("File couldn't be saved at '{dest} | {e}'")
+        res = urllib.request.urlopen(self.url)
 
-        logger.info("File saved successfully!")
+        css_res = urllib.request.urlopen(link_location[self.source_name][2])
+
+        c = css_res.read()
+
+        _res = res.read()
+
+        with open(Path.cwd() / self.config['HTML_input_path'] / "test.html", "w", encoding="utf-8") as f:
+            r = str(_res, "utf-8")
+            r = r.replace("<!DOCTYPE html>",
+                          "<!DOCTYPE html><style>" + str(c, "utf-8") + "</style>")
+
+            f.write(r)
+
+        soup = BeautifulSoup(_res, 'html.parser')
+        t = soup.find("div", attrs={
+                      link_location[self.source_name][0]: link_location[self.source_name][1]})
+        tags = t.find_all("a")
+
+        for tag in tags:
+            if (not tag["href"].startswith("/")) and (not self.domain.endswith("/")):
+                continue
+
+            if tag["href"].startswith("/w/"):
+                continue
+
+            if "#" in tag["href"]:
+                continue
+
+            res = urllib.request.urlopen(self.domain + tag["href"])
+
+            _res = res.read()
+
+            with open(Path.cwd() / self.config['HTML_input_path'] / (os.path.basename(tag["href"]) + ".html"), "w", encoding="utf-8") as f:
+                r = str(_res, "utf-8")
+                r = r.replace("<!DOCTYPE html>",
+                              "<!DOCTYPE html><style>" + str(c, "utf-8") + "</style>")
+
+                f.write(r)

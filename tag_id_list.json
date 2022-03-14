@@ -1,22 +1,30 @@
 {
-    "sidenav": [
-        "append",
-        null
-    ],
-    "main": [
-        "append",
-        "margin-left:220px;padding-top:0px"
-    ],
-    "mainLeaderboard": [
-        "decompose",
-        null
-    ],
-    "leftmenuinner": [
-        null,
-        "padding-top:0px !important"
-    ],
-    "midcontentadcontainer": [
-        "decompose",
-        null
-    ]
+    "w3schools": {
+        "sidenav": [
+            "append",
+            null
+        ],
+        "main": [
+            "append",
+            "margin-left:220px;padding-top:0px"
+        ],
+        "mainLeaderboard": [
+            "decompose",
+            null
+        ],
+        "leftmenuinner": [
+            null,
+            "padding-top:0px !important"
+        ],
+        "midcontentadcontainer": [
+            "decompose",
+            null
+        ]
+    },
+    "wikipedia": {
+        "content": [
+            "append",
+            null
+        ]
+    }
 }

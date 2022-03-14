@@ -1,0 +1,12 @@
+{
+    "w3schools": [
+        "id",
+        "sidenav",
+        "https://www.w3schools.com/lib/w3schools30.css"
+    ],
+    "wikipedia": [
+        "class",
+        "mw-parser-output",
+        "https://de.wikipedia.org/w/load.php?lang=de&modules=ext.cite.styles%7Cext.flaggedRevs.basic%2Cicons%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediaBadges%7Cmediawiki.widgets.styles%7Coojs-ui-core.icons%2Cstyles%7Coojs-ui.styles.indicators%7Cskins.vector.styles.legacy%7Cwikibase.client.init&only=styles&skin=vector"
+    ]
+}

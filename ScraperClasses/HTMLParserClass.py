@@ -11,7 +11,7 @@ logger = config.logger
 
 
 class HTMLParser(WebScraper):
-    def __init__(self, file: str) -> None:
+    def __init__(self, file: str, tag_origin: str) -> None:
         """
         Create an HTMLParser Object
 
@@ -24,6 +24,7 @@ class HTMLParser(WebScraper):
         super().__init__()
 
         self.file = file
+        self.tag_origin = tag_origin
         self.new_soup = BeautifulSoup("<!DOCTYPE html>", 'html.parser')
 
         with open("config.json", "r") as f:
@@ -58,7 +59,7 @@ class HTMLParser(WebScraper):
         self.new_soup.append(tag)
 
         with open("tag_id_list.json", "r") as f:
-            tag_id_list = json.load(f)
+            tag_id_list = json.load(f)[self.tag_origin]
 
         logger.debug("Loaded tags from file 'tag_id_list.json'")
 
